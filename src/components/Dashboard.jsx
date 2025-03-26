@@ -1,7 +1,12 @@
 import React from "react";
+import { useContext } from "react";
+import KhatabookContext from "../context/KhatabookContext";
 
-const Dashboard = ({ transactions }) => {
-  console.log("transactions", transactions);
+const Dashboard = () => {
+  const { transactions } = useContext(KhatabookContext);
+
+ 
+
   const income = transactions
     .filter((transaction) => transaction.amount > 0)
     .reduce((p, c) => p + c.amount, 0);

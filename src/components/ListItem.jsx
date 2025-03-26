@@ -1,7 +1,25 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import KhatabookContext from "../context/KhatabookContext";
 
-const ListItem = ({ transaction, removeTransaction, setStore }) => {
+const ListItem = ({ transaction }) => {
+  const { dispatch } = useContext(KhatabookContext);
+
+  const handleRemove = (id) => {
+    dispatch({
+      type: "REMOVE_TRANSACTION",
+      payload: id,
+    });
+  };
+
+  const handleEdit = (transaction) => {
+    dispatch({
+      type: "EDIT_TRANSACTION",
+      payload: transaction,
+    });
+  };
+
+  // console.log(handleEdit);
   return (
     <li
       className={
@@ -14,15 +32,13 @@ const ListItem = ({ transaction, removeTransaction, setStore }) => {
       <p className="text-sm font-semibold">{transaction.text}</p>
       <div className="absolute top-5 right-5">
         <button
-          onClick={() => {
-            setStore(transaction);
-          }}
+          onClick={() => handleEdit(transaction)}
           className="py-0.5 px-2  mx-1 cursor-pointer rounded-md"
         >
           <FaEdit className="text-yellow-600" />
         </button>
         <button
-          onClick={() => removeTransaction(transaction.id)}
+          onClick={() => handleRemove(transaction.id)}
           className=" py-0.5 px-2  mx-1 cursor-pointer rounded-md"
         >
           <FaTrash className="text-red-500" />

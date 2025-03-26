@@ -1,36 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import KhatabookContext from "../context/KhatabookContext";
 
-const Form = ({ addTransaction, updateTransaction, store }) => {
+const Form = () => {
+  const { dispatch, edit } = useContext(KhatabookContext);
+
   const [text, setText] = useState("");
   const [amount, setAmount] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (store) {
-      updateTransaction({
-        id: store.id,
-        amount: parseInt(amount),
-        text: text,
-      });
-    } else {
-      addTransaction({
-        id: crypto.randomUUID(),
-        amount: parseInt(amount),
-        text: text,
-      });
-    }
+    !edit.isEdit ?
+     // Save Transation
+
+        dispatch({
+          type: "SAVE_TRANSACTION",
+
+          payload: { id : crypto.randomUUID(), text, amount : +amount },
+        }):
+       //  Update Transaction
+        dispatch({
+          type: "UPDATE_TRANSACTION",
+          payload: { id: edit.transaction.id, text, amount : +amount },
+        });
 
     setText("");
     setAmount("");
   };
 
   useEffect(() => {
-    if (store) {
-      setAmount(store.amount);
-      setText(store.text);
+    if (edit.isEdit) {
+      setAmount(edit.transaction.amount);
+      setText(edit.transaction.text);
     }
-  }, [store]);
+  }, [edit]);
 
   return (
     <div className="border border-gray-300 p-4 rounded-md">
@@ -53,7 +56,7 @@ const Form = ({ addTransaction, updateTransaction, store }) => {
           placeholder="Enter Transaction"
         />
         <button className=" bg-green-400  py-2 w-full rounded-md my-2 font-semibold cursor-pointer hover:bg-green-700 duration-150 ">
-          {store ? "Update" : "Submit"} Transaction
+          {edit ? "Update" : "Submit"} Transaction
         </button>
       </form>
     </div>
