@@ -10,18 +10,18 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    !edit.isEdit ?
-     // Save Transation
+    !edit.isEdit
+      ? // Save Transation
 
         dispatch({
           type: "SAVE_TRANSACTION",
 
-          payload: { id : crypto.randomUUID(), text, amount : +amount },
-        }):
-       //  Update Transaction
+          payload: { id: crypto.randomUUID(), text, amount: +amount },
+        })
+      : //  Update Transaction
         dispatch({
           type: "UPDATE_TRANSACTION",
-          payload: { id: edit.transaction.id, text, amount : +amount },
+          payload: { id: edit.transaction.id, text, amount: +amount },
         });
 
     setText("");
@@ -55,7 +55,7 @@ const Form = () => {
           className="w-full border border-indigo-500 p-1 my-1 rounded-sm"
           placeholder="Enter Transaction"
         />
-        <button className=" bg-green-400  py-2 w-full rounded-md my-2 font-semibold cursor-pointer hover:bg-green-700 duration-150 ">
+        <button className=" bg-indigo-700  py-2 w-full rounded-md my-2 font-semibold cursor-pointer hover:bg-indigo-500 text-white duration-150 ">
           {edit ? "Update" : "Submit"} Transaction
         </button>
       </form>
